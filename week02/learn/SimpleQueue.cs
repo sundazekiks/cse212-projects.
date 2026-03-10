@@ -1,5 +1,7 @@
-﻿public class SimpleQueue {
-    public static void Run() {
+﻿public class SimpleQueue
+{
+    public static void Run()
+    {
         // Test Cases
 
         // Test 1
@@ -8,10 +10,11 @@
         Console.WriteLine("Test 1");
         var queue = new SimpleQueue();
         queue.Enqueue(100);
+        Console.WriteLine(queue.ToString());
         var value = queue.Dequeue();
         Console.WriteLine(value);
         // Defect(s) Found:
-
+        // The Dequeue method was targeting the 1 index of the array well since when we do dequeue it should remove the first element on the array which is in index 0 so I change the index position
         Console.WriteLine("------------");
 
         // Test 2
@@ -29,7 +32,7 @@
         value = queue.Dequeue();
         Console.WriteLine(value);
         // Defect(s) Found: 
-
+        // Changed insert to Add so each value that gets pushed won't always go to the 0 index  on the Enqueue method
         Console.WriteLine("------------");
 
         // Test 3
@@ -37,11 +40,13 @@
         // Expected Result: An exception should be raised
         Console.WriteLine("Test 3");
         queue = new SimpleQueue();
-        try {
+        try
+        {
             queue.Dequeue();
             Console.WriteLine("Oops ... This shouldn't have worked.");
         }
-        catch (IndexOutOfRangeException) {
+        catch (IndexOutOfRangeException)
+        {
             Console.WriteLine("I got the exception as expected.");
         }
         // Defect(s) Found: 
@@ -53,8 +58,9 @@
     /// Enqueue the value provided into the queue
     /// </summary>
     /// <param name="value">Integer value to add to the queue</param>
-    private void Enqueue(int value) {
-        _queue.Insert(0, value);
+    private void Enqueue(int value)
+    {
+        _queue.Add(value);
     }
 
     /// <summary>
@@ -62,12 +68,15 @@
     /// </summary>
     /// <exception cref="IndexOutOfRangeException">If queue is empty</exception>
     /// <returns>First integer in the queue</returns>
-    private int Dequeue() {
-        if (_queue.Count <= 0)
-            throw new IndexOutOfRangeException();
+    private int Dequeue()
+    {
 
-        var value = _queue[1];
-        _queue.RemoveAt(1);
+        if (_queue.Count <= 0)
+        {
+            throw new IndexOutOfRangeException();
+        }
+        var value = _queue[0];
+        _queue.RemoveAt(0);
         return value;
     }
 }
