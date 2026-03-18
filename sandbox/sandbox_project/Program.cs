@@ -1,20 +1,19 @@
-using System;
-using System.Diagnostics;
 public class Program
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
-        List<int> d = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        var amount = 3;
-        List<int> lastElements = d.GetRange(d.Count - amount, amount);
-        d.RemoveRange(d.Count - amount, amount);
-        d.InsertRange(0, lastElements);
+        int[] numberList = new int[10];
 
-        foreach (int i in d)
+        numberList[0] = 1;
+        numberList[2] = 3;
+
+
+        foreach (int i in numberList)
         {
-            Console.WriteLine(i);
+            Console.WriteLine(-i.GetHashCode());
         }
+        Console.WriteLine("Here");
+        Console.WriteLine(548345952 % 10);
+        Console.WriteLine("cat".GetHashCode());
     }
-
-
 }

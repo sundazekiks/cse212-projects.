@@ -25,6 +25,9 @@
     private static int CountDuplicates(int[] data)
     {
         // Add code here.
-        return 0;
+        var dupCounts = data.Length;
+        var theSet = new HashSet<int>(data);
+        // Subtract the length of the the data to number of original values (since set removes the duplicate values)
+        return dupCounts - theSet.Count;
     }
 }
