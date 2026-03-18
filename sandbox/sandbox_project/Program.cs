@@ -2,18 +2,26 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        int[] numberList = new int[10];
+        var myStr = Mapper("batman");
 
-        numberList[0] = 1;
-        numberList[2] = 3;
+        Console.WriteLine(myStr);
+    }
 
+    public static string Mapper(string str)
+    {
+        var theSet = new HashSet<char>();
 
-        foreach (int i in numberList)
+        foreach (char c in str)
         {
-            Console.WriteLine(-i.GetHashCode());
+            if (theSet.Contains(c))
+            {
+                return $"{c.ToString()} is the duplicate value";
+            }
+
+            theSet.Add(c);
         }
-        Console.WriteLine("Here");
-        Console.WriteLine(548345952 % 10);
-        Console.WriteLine("cat".GetHashCode());
+
+        return "No duplicate letters";
+
     }
 }
