@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 public static class SetsAndMaps
@@ -22,7 +23,44 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var set = new HashSet<string>(words);
+        var ls = new List<string>();
+
+        foreach (var word in set)
+        {
+            string firstWord = word.ToLower();
+            string secondWord = ReverseWord(firstWord);
+
+            if (firstWord == secondWord)
+            {
+                set.Remove(firstWord);
+            }
+
+            if (set.Contains(secondWord))
+            {
+                ls.Add($"{secondWord} & {firstWord}");
+            }
+            set.Remove(firstWord);
+        }
+
+        return ls.ToArray();
+    }
+
+    /// <summary>
+    /// added a new method to reverse a string
+    /// </summary>   
+
+
+    public static string ReverseWord(string word)
+    {
+        var stack = new Stack<char>();
+
+        foreach (char c in word)
+        {
+            stack.Push(c);
+        }
+
+        return string.Join("", stack.ToArray());
     }
 
     /// <summary>
@@ -39,14 +77,28 @@ public static class SetsAndMaps
     public static Dictionary<string, int> SummarizeDegrees(string filename)
     {
         var degrees = new Dictionary<string, int>();
+        var set = new HashSet<string>();
+
+        var ExistingField = (string field) =>
+        {
+            if (!degrees.ContainsKey(field))
+            {
+                return 1;
+            }
+            return degrees[field] + 1;
+        };
+
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            degrees[fields[3]] = ExistingField(fields[3]);
         }
 
         return degrees;
     }
+
+
 
     /// <summary>
     /// Determine if 'word1' and 'word2' are anagrams.  An anagram
@@ -67,7 +119,53 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var firstW = ToDictMethod(word1);
+        var secondW = ToDictMethod(word2);
+        if (firstW.Count > secondW.Count) return Checker(firstW, secondW);
+        if (secondW.Count > firstW.Count) return Checker(secondW, firstW);
+
+
+
+
+        return Checker(firstW, secondW);
+    }
+
+    public static bool Checker(Dictionary<char, int> chosenDict, Dictionary<char, int> otherDict)
+    {
+        foreach (char c in chosenDict.Keys)
+        {
+            if (!otherDict.ContainsKey(c)) return false;
+            if (chosenDict[c] != otherDict[c]) return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    ///   Added a method to convert a string into a Dictionary object where each char of the string is a key and the value is gonna be the number how many times it showed up on the string
+    /// </summary>
+    /// <param name="word">the string to be converted</param>
+    /// <returns>Dictionary<char, int></returns>
+    /// 
+    public static Dictionary<char, int> ToDictMethod(string word)
+    {
+
+        var dict = new Dictionary<char, int>();
+
+
+        int checker(char character)
+        {
+            if (dict.ContainsKey(character))
+            {
+                return dict[character];
+            }
+            return 0;
+        }
+
+        foreach (char c in word.ToLower().Trim().Replace(" ", ""))
+        {
+            dict[c] = checker(c) + 1;
+        }
+        return dict;
     }
 
     /// <summary>
